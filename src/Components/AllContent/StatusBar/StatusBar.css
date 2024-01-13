@@ -1,0 +1,33 @@
+.statusbar_container{
+    /*height: 90px;*/
+    width: 615px;
+    background-color: white;
+    /*border: 1px solid #dbdbdb;*/
+    margin-top: 16px;
+    display: flex;
+    overflow-x: scroll;
+}
+
+/*Make the scrollbar disappear when div is overflow.*/
+.statusbar_container::-webkit-scrollbar{
+    display: none;
+}
+
+
+.statusbar-status{
+    min-width: 55px;
+    min-height: 55px;
+    border: 2px solid #DF3968;
+    cursor: pointer;
+}
+
+.status{
+    margin: 5px 10px 4px 10px;
+}
+
+.status-text{
+    font-size: 12px;
+    max-width: 50px;
+    overflow-x: hidden;
+    text-align: center;
+}
