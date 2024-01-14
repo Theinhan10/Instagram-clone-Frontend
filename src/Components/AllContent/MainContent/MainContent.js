@@ -1,8 +1,10 @@
-import React from 'react'
-import "./MainContent.css"
-import Grid from '@mui/material/Grid';
-import StatusBar from '../StatusBar/StatusBar';
-import MainPage from '../MainPage/MainPage';
+import React from "react";
+import "./MainContent.css";
+import Grid from "@mui/material/Grid";
+import StatusBar from "../StatusBar/StatusBar";
+import MainPage from "../MainPage/MainPage";
+import InfoSection from "../InfoSection/InfoSection";
+import Suggestions from "../Suggestions/Suggestions";
 
 export default function MainContent() {
   return (
@@ -13,30 +15,28 @@ export default function MainContent() {
         </Grid>
 
         <Grid item xs={6}>
-            <div>
-              <div className='status'>
-                <StatusBar/>
-              </div>
-              
-              <div className='mainpage'>
-                <MainPage/>
-              </div>
-            
+          <div>
+            <div className="status">
+              <StatusBar />
             </div>
+
+            <div className="mainpage">
+              <MainPage />
+            </div>
+          </div>
         </Grid>
 
         <Grid item xs={2}>
-          fsdf
+          <div className="InfoSection-Suggestions">
+              <InfoSection />
+              <Suggestions />
+          </div>
         </Grid>
 
         <Grid item xs={2}>
-          dsfsd
+          
         </Grid>
-
-
-
-
       </Grid>
     </div>
-  )
+  );
 }

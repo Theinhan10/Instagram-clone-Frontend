@@ -32,19 +32,26 @@
 
 .post_reactimage{
     width: 25px;
-    margin: 5px;
+    margin: 5px 5px 0 5px;
     height: 30px;
 }
+.post_reactimage-heart{
+    width: 25px;
+    height: 30px;
+    margin: 5px 5px 0 0;
+}
+
 .post_comment{
-    margin: 10px;
+    
+    font-size: 12px;
 }
 
 .post_commentbox{
-    height: 26px;
-    width: 550px;
+    height: 15px;
+    width: 410px;
     border: none;
     outline: none;
-    font-size: 16px;
-    padding-left: 7px;
+    font-size: 12px;
+    
     margin-bottom: 12px;
 }
