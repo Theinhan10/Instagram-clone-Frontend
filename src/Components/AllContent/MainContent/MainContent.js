@@ -8,35 +8,23 @@ import Suggestions from "../Suggestions/Suggestions";
 
 export default function MainContent() {
   return (
-    <div>
-      <Grid container>
-        <Grid item xs={2}>
-          grid 1
-        </Grid>
-
-        <Grid item xs={6}>
-          <div>
-            <div className="status">
-              <StatusBar />
-            </div>
-
-            <div className="mainpage">
-              <MainPage />
-            </div>
+    <div className="mainContent-container">
+      
+      <div className="main-content">
+          <div className="status">
+            <StatusBar />
           </div>
-        </Grid>
 
-        <Grid item xs={2}>
-          <div className="InfoSection-Suggestions">
-              <InfoSection />
-              <Suggestions />
+          <div className="mainpage">
+            <MainPage />
           </div>
-        </Grid>
+      </div>
 
-        <Grid item xs={2}>
-          
-        </Grid>
-      </Grid>
+        <div className="InfoSection-Suggestions">
+          <InfoSection />
+          <Suggestions />
+        </div>
+      
     </div>
   );
 }

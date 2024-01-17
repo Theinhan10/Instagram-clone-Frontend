@@ -4,12 +4,13 @@ import NavBar from "../NavBar/NavBar";
 import MainContent from "../MainContent/MainContent";
 
 
+
 function Home() {
   return (
     <div className="home">
       <div className="homepage">
         <div className="navColumn">
-          <NavBar />
+          <NavBar/>
         </div>
 
         <div className="mainColumn">
