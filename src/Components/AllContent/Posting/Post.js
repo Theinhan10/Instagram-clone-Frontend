@@ -11,13 +11,11 @@ import SendIcon from "@mui/icons-material/Send";
 import { PostAddRounded } from "@mui/icons-material";
 
 export default function Post(props) {
-  const [isFocused, setIsFocused] = useState(false);
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-  const handleBlur = () => {
-    setIsFocused(false);
-  };
+    const [text, setText] = useState('');
+
+    const handleChange = (e) => {
+      setText(e.target.value);
+    };
 
 
   const [commentList, setCommentList] = useState([
@@ -61,38 +59,43 @@ export default function Post(props) {
       {/*Analytics */}
       <div>
         <div>
-          <img src={love} className="post_reactimage" />
+          <img src={love} className="post_reactimage-heart" />
           <img src={comment} className="post_reactimage" />
           <img src={share} className="post_reactimage" />
         </div>
 
-        <div style={{ fontWeight: "bold", marginLeft: "7px" }}>
+        <div style={{ fontWeight: "bold", fontSize: "12px" }}>
           {props.likes} likes
         </div>
+
+        <div style={{fontSize: "12px" }}>
+          <span style={{ fontWeight: "bold" }}>{props.userName}</span>: {props.postDescription}
+        </div>
+
       </div>
 
       {/*Comment Section */}
       <div>
         {
             commentList.map((comment, index) => ((
-                <div className="post_comment">{comment.username}: {comment.description}</div>
+                <div key={index} className="post_comment">{comment.username}: {comment.description}</div>
             )))
         }
        
-        <input
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          text="text"
-          className="post_commentbox"
-          placeholder="Add a comment..."
-        />
-        {isFocused && (
-          <span
-            style={{ fontWeight: "bold", marginLeft: "7px", color: "#0095F6" }}
-          >
-            Post
-          </span>
-        )}
+       <input
+        type="text"
+        value={text}
+        onChange={handleChange}
+        className="post_commentbox"
+        placeholder="Add a comment..."
+      />
+      {text.length > 0 && (
+        <span
+          style={{ fontWeight: "bold", marginLeft: "7px", color: "#0095F6", fontSize: "12px" }}
+        >
+          Post
+        </span>
+      )}
       </div>
     </div>
   );

@@ -1,0 +1,59 @@
+.suggestions-container{
+    width: 290px;
+    height: 350px;
+    margin-top: 30px;
+    font-family: var(--main-font-family);
+}
+
+.suggestions-header{
+    display: flex;
+}
+
+.suggested-for-you-text{
+    font-weight: bold;
+    color: #8e8e8e;
+    font-size: 14px;
+}
+
+.see-all-text{
+    font-weight: 750;
+    font-size: 13px;
+    margin-left: auto;
+    cursor: pointer;
+}
+
+.suggestions-body{
+    display: flex;
+    margin-top: 12px;
+    height: 315px;
+    flex-direction: column;
+    
+}
+
+.suggestions-friend-content{
+    width: 100%;
+    height: 45px;
+    display: flex;
+    margin-top: 10px;
+}
+
+.suggestions-image{
+    min-width: 40px;
+    min-height: 40px;
+}
+
+.suggestions-username{
+    font-weight: 750;
+    margin-left: 10px;
+    margin-top: 12px;
+    font-size: 13px;
+}
+
+.suggest-follow{
+    color: #0095F6;
+    margin-left: auto;
+    margin-top: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 550;
+}

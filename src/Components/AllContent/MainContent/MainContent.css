@@ -1,7 +1,83 @@
-.status{
-    margin-left: 12px;
+.mainContent-container{
+    display: flex;
+    width: 100%;
+    justify-content: center;  
 }
 
-.mainpage{
-    margin-left: 85px;
+.main-content{
+    display: block;
+    width: 100%;
+    max-width: 735px;
 }
+
+.statusBar{
+    width: 100%;
+}
+
+
+.InfoSection-Suggestions{
+    width: 319px;
+    height: 100vh;
+}
+
+
+
+@media (width < 1155px){
+    .InfoSection-Suggestions{
+        display: none;
+    }
+
+    .main-content{
+        display: block;
+        width: 100%;
+        max-width: 635px;
+    }
+}
+
+@media (width < 735px){
+    .main-content{
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* xs */
+@media (min-width: 475px) {
+
+} 
+
+/* sm */
+@media (min-width: 640px) {
+
+} 
+
+/* md */
+ @media (min-width: 768px) {
+
+ } 
+
+/* lg */
+@media (min-width: 1024px) {
+
+} 
+
+/* xl */
+@media (min-width: 1280px) {
+
+} 
+
+/* 2xl */
+@media (min-width: 1536px) {
+
+} 
+

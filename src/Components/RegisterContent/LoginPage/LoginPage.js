@@ -8,6 +8,8 @@ import playstore from "../../../images/play.png";
 import "./LoginPage.css";
 import SignIn from "../SignIn/SignIn";
 import SignUp from "../SignUp/SignUp";
+import { Navigate, Link, useNavigate } from 'react-router-dom'
+import { useAuth } from "../../../Context/AuthContext";
 
 export default function LoginPage() {
 
@@ -21,9 +23,14 @@ export default function LoginPage() {
     }
   }
 
+  const {userLoggedIn} = useAuth();
+
+  const navigate = useNavigate();
+
 
   return (
     <div>
+       {userLoggedIn && (<Navigate to={'/home'} replace={true} />)}
       <Grid container spacing={2}>
         <Grid item xs={3}></Grid>
         <Grid item xs={6}>

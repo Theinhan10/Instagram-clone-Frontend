@@ -22,7 +22,7 @@ export default function StatusBar() {
     <div>
       <div className="statusbar_container">
         {data.map((item, index) => (
-          <div className="status">
+          <div key={index} className="status">
             <Avatar className="statusbar-status" src={item.imageUrl} />
             <div className="status-text">{item.username}</div>
           </div>
