@@ -16,7 +16,7 @@
 .mainColumn {
   flex: 1 3 830px;
   height: 100vh;
-  background-color: azure;
+  /*background-color: azure;*/
 }
 
 @media (width < 1285px){
