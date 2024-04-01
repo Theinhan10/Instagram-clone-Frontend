@@ -11,7 +11,11 @@ export default function MainContent() {
     <div className="mainContent-container">
       
       <div className="main-content">
+<<<<<<< HEAD
           <div className="statusBar">
+=======
+          <div className="status">
+>>>>>>> ab4111138fc94f4a85dee606cfab0dced59e13d0
             <StatusBar />
           </div>
 

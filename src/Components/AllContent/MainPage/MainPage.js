@@ -36,7 +36,11 @@ export default function MainPage() {
     <div className='mainpage-content'>
         {
             postList.map((post,index) =>((
+<<<<<<< HEAD
                 <Post key={index} id={post.id} userName={post.userName} postDescription={post.description} postImage={post.postImage} likes={post.likes}/>
+=======
+                <Post id={post.id} userName={post.userName} postDescription={post.description} postImage={post.postImage} likes={post.likes}/>
+>>>>>>> ab4111138fc94f4a85dee606cfab0dced59e13d0
             )))
         }
     </div>

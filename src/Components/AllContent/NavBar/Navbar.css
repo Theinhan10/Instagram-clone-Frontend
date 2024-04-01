@@ -78,7 +78,11 @@
   transition: 0.3s;
 }
 
+<<<<<<< HEAD
 @media (width < 1285px) {
+=======
+@media (width < 1315px) {
+>>>>>>> ab4111138fc94f4a85dee606cfab0dced59e13d0
   .logo-img{
       display: none;
   }
@@ -98,10 +102,13 @@
   }
 }
 
+<<<<<<< HEAD
 @media (width < 735px){
   
 }
 
+=======
+>>>>>>> ab4111138fc94f4a85dee606cfab0dced59e13d0
 
 
 .sidebar button i{
