@@ -41,11 +41,7 @@ export default function Suggestions() {
 
         <div className="suggestions-body">
           {suggestions.slice(0, 6).map((suggestion, index) => (
-<<<<<<< HEAD
             <div key={index} className="suggestions-friend-content">
-=======
-            <div className="suggestions-friend-content">
->>>>>>> ab4111138fc94f4a85dee606cfab0dced59e13d0
               <Avatar src={suggestion.pic} className="suggestions-image" />
               <div className="suggestions-username">{suggestion.username}</div>
               <div className="suggest-follow">Follow</div>
