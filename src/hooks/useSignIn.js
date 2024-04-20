@@ -16,6 +16,7 @@ export const useSignIn = () => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const userUniqueId = userCredential.user.uid;
+        //console.log(userCredential);
         if(userCredential){
           console.log("firebase login works");
         }
@@ -24,9 +25,11 @@ export const useSignIn = () => {
         setSuccess(true);
     
       } catch (error) {
+        const jsonError = error.response.data.error;
         console.log("There was an error with sign In firebase:", error.message);
         setIsLoading(false);
         setSuccess(false);
+        setError(jsonError);
         //Handle error appropriately
       }
   };

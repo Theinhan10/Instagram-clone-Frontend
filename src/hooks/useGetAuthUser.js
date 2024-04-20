@@ -38,7 +38,7 @@ export const useGetAuthUser = () => {
       })
       .catch(function (error) {
         const jsonError = error.response.data.error;
-        console.log("error with signup in the DB" + error);
+        console.log("error with getting user in the DB" + error);
         setIsLoading(false);
         setSuccess(false);
         setError(jsonError);
