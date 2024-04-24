@@ -72,7 +72,11 @@ body{
 .login_fb{
     color: #395185;
     font-weight: bold;
-    margin-top: 50px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
 
 .login_forgt{
@@ -110,7 +114,11 @@ body{
 
 .loginPage_option{
     margin-top: 10px;
+    display: flex;
+    justify-content: center;
 }
+
+
 
 .loginPage_dwing{
     margin: 5px;

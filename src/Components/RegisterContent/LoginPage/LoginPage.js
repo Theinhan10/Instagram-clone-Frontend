@@ -41,7 +41,7 @@ export default function LoginPage() {
 
             <div>
               <div className="loginpage_rightcomponent">
-                <img src={inst_logo} className="loginpage_logo" />
+                <img src={inst_logo} className="loginpage_logo" style={{ marginLeft: "auto", marginRight: "auto" }}/>
                 <div className="loginPage_signin">
                   
                   {tryLogin ? <SignIn/> : <SignUp/> }

@@ -10,6 +10,9 @@ import { useState } from "react";
 import CompletePostModal from "../Modal/CompletePostModal";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Avatar } from '@mui/material'
 
 export default function AddPhotoModal({ open, setOpen }) {
   //const [open, setOpen] = useState(false);
@@ -17,6 +20,8 @@ export default function AddPhotoModal({ open, setOpen }) {
   const [progess, setProgess] = useState();
   const [finalAddPost, setFinalAddPost] = useState(false);
   const [images, setImages] = useState([]);
+
+  const [caption, setCaptions] = useState();
 
   const upload = async (e) => {
     // Define an asynchronous function named upload that takes an event e as a parameter
@@ -83,7 +88,7 @@ export default function AddPhotoModal({ open, setOpen }) {
   const onChooseFile = () => {
     inputRef.current.click();
   };
-  
+
   const removeFile = (index) => {
     const updatedFiles = [...images];
     updatedFiles.splice(index, 1); // Remove the file at the specified index
@@ -107,6 +112,20 @@ export default function AddPhotoModal({ open, setOpen }) {
     setFinalAddPost(true);
   };
 
+  const handleBack = () => {
+    setFinalAddPost(false);
+  };
+
+  //This for finalAddPost section
+  const [curr, setCurr] = useState(0);
+
+  const prev = () => {
+    setCurr((curr) => (curr === 0 ? images.length - 1 : curr - 1));
+  };
+  const next = () => {
+    setCurr((curr) => (curr === images.length - 1 ? 0 : curr + 1));
+  };
+
   return (
     <div>
       <Modal
@@ -118,12 +137,94 @@ export default function AddPhotoModal({ open, setOpen }) {
         {finalAddPost ? (
           /**<CompletePostModal />*/
           <div className="createPostModal">
-            <div className="createPost">
+            <div className="sharePost">
+              <h1 className="CParrow">
+                <ArrowBackIcon style={{ fontSize: 28 }} onClick={handleBack} />
+              </h1>
               <h1 className="CPname">Create new post</h1>
+              <h1 className="share">Share</h1>
             </div>
 
-            <div>
-              <img src={images} width="500px" />
+            <div className="imagesAndCaption">
+              <div className="image">
+                <div className="overflow-hidden relative">
+                  <div
+                    className="flex transition-transform ease-out duration-500"
+                    style={{ transform: `translateX(-${curr * 100}%)` }}
+                  >
+                    {images.map((file, index) => {
+                      if (
+                        file.name.endsWith(".jpeg") ||
+                        file.name.endsWith(".jpg") ||
+                        file.name.endsWith(".png")
+                      ) {
+                        // If the file is an image with JPEG or JPG extension
+                        return (
+                          <img
+                            key={index}
+                            src={URL.createObjectURL(file)}
+                            alt={`Image ${index}`}
+                          />
+                        );
+                      } else if (
+                        file.name.endsWith(".MOV") ||
+                        file.name.endsWith(".mp4")
+                      ) {
+                        // If the file is a video with MOV or MP4 extension
+                        return (
+                          <video key={index} controls autoPlay>
+                            <source
+                              src={URL.createObjectURL(file)}
+                              type="video/mp4"
+                            />
+                            Your browser does not support the video tag.
+                          </video>
+                        );
+                      } else {
+                        return null; // Skip unknown file types
+                      }
+                    })}
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-between p-3">
+                    <button
+                      onClick={prev}
+                      className="p-1 rounded-full shadow bg-white/80 text-gray-800 hover:bg-white"
+                    >
+                      <ChevronLeft style={{ fontSize: 30 }} />
+                    </button>
+                    <button
+                      onClick={next}
+                      className="p-1 rounded-full shadow bg-white/80 text-gray-800 hover:bg-white"
+                    >
+                      <ChevronRight style={{ fontSize: 30 }} />
+                    </button>
+                  </div>
+
+                  <div className="absolute bottom-4 right-0 left-0">
+                    <div className="flex items-center justify-center gap-2">
+                      {images.map((_, i) => (
+                        <div
+                          key={i} // Add a unique key prop based on the index i
+                          className={`
+              transition-all w-3 h-3 bg-white rounded-full
+              ${curr === i ? "p-1" : "bg-opacity-50"}
+            `}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="caption">
+                <div className="avatar_container">
+                  <Avatar src={addPic} style={{ width: "32px", height: "32px" }} />
+                  <div className="avatarName_container">
+                    <div className="info-username">UserName</div>
+                  </div>
+                </div>
+                <textarea placeholder="Write a caption..." required value={caption} />
+              </div>
             </div>
           </div>
         ) : (
@@ -179,8 +280,6 @@ export default function AddPhotoModal({ open, setOpen }) {
                 </div>
               ))}
             </div>
-
-            <div>{progess}</div>
           </div>
         )}
       </Modal>
