@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Modal from "@mui/material/Modal";
 import { storage } from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -12,7 +12,10 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Avatar } from '@mui/material'
+import { Avatar } from "@mui/material";
+import { usePostFilesStorage } from "../../../hooks/usePostFilesStorage";
+import { useAddPost } from "../../../hooks/useAddPost";
+import { useAuth } from "../../../Context/AuthContext";
 
 export default function AddPhotoModal({ open, setOpen }) {
   //const [open, setOpen] = useState(false);
@@ -21,71 +24,67 @@ export default function AddPhotoModal({ open, setOpen }) {
   const [finalAddPost, setFinalAddPost] = useState(false);
   const [images, setImages] = useState([]);
 
-  const [caption, setCaptions] = useState();
+  const [caption, setCaption] = useState();
+  const [userName, setUserName] = useState();
+  const [userUniqueId, setUserUniqueId] = useState();
 
-  const upload = async (e) => {
-    // Define an asynchronous function named upload that takes an event e as a parameter
-    const image = e.target.files[0]; // Retrieve the first selected file from the event's target files
-    // Check if an image file was selected
-    if (!image) {
-      console.log("No image selected."); // Log a message to the console if no image was selected
-      return; // Return early from the function
+
+  const { error, isLoading, success, uploadFileToStorage } =
+    usePostFilesStorage();
+  const { addPost } = useAddPost();
+
+  const { currentUser, userLoggedIn } = useAuth();
+
+
+  
+  
+  //const userUniqueId = currentUser.userUniqueId;
+ // const userName = currentUser.userName;
+
+  useEffect(()=>{
+    if(currentUser){
+      setUserName(currentUser.userName);
+      setUserUniqueId(currentUser.userUniqueId);
+    }
+  },[currentUser])
+ 
+  console.log(images);
+  console.log(userName, userUniqueId);
+  //console.log(downloadURLs);
+
+  const handleSharePost = async () => {
+    if (images.length === 0) {
+      console.log("No images selected.");
+      return;
     }
 
-    // Create a reference to the storage location where the image will be stored
-    const storageRef = ref(storage, `images/${image.name + v4()}`);
+    try {
+      // Upload files to storage and get download URLs
+      const urls = await uploadFileToStorage(images);
 
-    // Initiate an upload task to upload the image file to the storage reference
-    const uploadTask = uploadBytesResumable(storageRef, image);
-
-    // Set up callbacks for various upload states
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        // Progress callback (not implemented)
-        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setProgess(progress);
-      },
-      (error) => {
-        console.log("Upload failed!", error); // Log an error message if the upload fails
-      },
-      () => {
-        // Upon successful upload, retrieve the download URL for the uploaded file
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          //console.log("File available at", downloadURL); // Log the download URL to the console
-          //setPostpicture(downloadURL);
-          /** 
-          axios
-            .post("http://localhost:8080/post", {
-              userUID: JSON.parse(localStorage.getItem("users")).userUniqueId, //need to decide to change it to userId in Db or use uid!
-              path: downloadURL,
-              timestamp: new Date().getTime(),
-              likeCount: 0,
-              userName: JSON.parse(localStorage.getItem("users")).userName,
-            })
-            .then(function (response) {
-              console.log("Successfully made a Post (pic)");
-            })
-            .catch(function (error) {
-              //console.log(error);
-              console.log("error with Post pic in DB " + error);
-            });
-            **/
-        });
-      }
-    );
+      // Now that download URLs are available, call addPost with all required parameters
+      await addPost(urls, userUniqueId, userName, caption);
+      //window.location.reload();
+    } catch (error) {
+      console.error("Error sharing post:", error);
+      // Handle errors here
+    }
   };
+
+  //console.log("Uploading", userUniqueId, userName);
 
   //when user select the pic in their file or computer
   //we want to save the picture
   const handleFileChange = (event) => {
     const files = event.target.files; // Get the selected files from the event
     setImages((prevFiles) => [...prevFiles, ...Array.from(files)]); // Append the selected files to the existing files
-    console.log(files);
   };
+  //console.log(images);
 
   const inputRef = useRef();
   const onChooseFile = () => {
+    // Programmatically trigger a click event on the input element
+    // This opens the file chooser dialog for the user to select a file
     inputRef.current.click();
   };
 
@@ -104,12 +103,14 @@ export default function AddPhotoModal({ open, setOpen }) {
   };
 
   //clicking next after selecting pic or video file
-  const handleNext = () => {
+  const handleNext = async () => {
     //have to make sure it can only go next if image exists.
     if (!images) {
       return;
     }
     setFinalAddPost(true);
+    // Upload files to storage and get download URLs
+    
   };
 
   const handleBack = () => {
@@ -119,6 +120,7 @@ export default function AddPhotoModal({ open, setOpen }) {
   //This for finalAddPost section
   const [curr, setCurr] = useState(0);
 
+  //images slideshow
   const prev = () => {
     setCurr((curr) => (curr === 0 ? images.length - 1 : curr - 1));
   };
@@ -142,7 +144,10 @@ export default function AddPhotoModal({ open, setOpen }) {
                 <ArrowBackIcon style={{ fontSize: 28 }} onClick={handleBack} />
               </h1>
               <h1 className="CPname">Create new post</h1>
-              <h1 className="share">Share</h1>
+              <h1 className="share" onClick={handleSharePost}>
+                Share
+              </h1>
+              {isLoading && <p>Loading...</p>}
             </div>
 
             <div className="imagesAndCaption">
@@ -218,12 +223,20 @@ export default function AddPhotoModal({ open, setOpen }) {
 
               <div className="caption">
                 <div className="avatar_container">
-                  <Avatar src={addPic} style={{ width: "32px", height: "32px" }} />
+                  <Avatar
+                    src={addPic}
+                    style={{ width: "32px", height: "32px" }}
+                  />
                   <div className="avatarName_container">
                     <div className="info-username">UserName</div>
                   </div>
                 </div>
-                <textarea placeholder="Write a caption..." required value={caption} />
+                <textarea
+                  placeholder="Write a caption..."
+                  required
+                  value={caption}
+                  onChange={(event) => setCaption(event.target.value)}
+                />
               </div>
             </div>
           </div>

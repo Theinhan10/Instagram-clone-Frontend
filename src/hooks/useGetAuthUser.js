@@ -7,7 +7,7 @@ export const useGetAuthUser = () => {
   const [isLoading, setIsLoading] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   /*
   // whenever the user clicks the submit button, we should navigate to the homepage with a nav bar that is for the logged in user
@@ -15,7 +15,7 @@ export const useGetAuthUser = () => {
     // if the signup is successful then we go to the next page
     if (success) {
       console.log("There was no error and we successfully signed in!!!");
-      navigate("/"); // route to the homepage if the login is successful
+      navigate("/home"); // route to the homepage if the login is successful
     }
   }, [success, navigate]);
 
@@ -34,7 +34,8 @@ export const useGetAuthUser = () => {
         //window.location.reload();
         setIsLoading(false);
         setSuccess(true);
-        navigate("/home");
+       // navigate("/home");
+       window.location.reload();
       })
       .catch(function (error) {
         const jsonError = error.response.data.error;

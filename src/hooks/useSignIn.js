@@ -3,11 +3,15 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../Components/firebase";
 import { useGetAuthUser } from "./useGetAuthUser";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 export const useSignIn = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const [success, setSuccess] = useState(null);
+
+  const navigate = useNavigate();
 
   const { getAuthUser } = useGetAuthUser();
 
@@ -20,10 +24,10 @@ export const useSignIn = () => {
         if(userCredential){
           console.log("firebase login works");
         }
+
         await getAuthUser(userUniqueId);
         setIsLoading(false);
         setSuccess(true);
-    
       } catch (error) {
         const jsonError = error.response.data.error;
         console.log("There was an error with sign In firebase:", error.message);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import inst_image from "../../../images/9364675fb26a.svg";
 import inst_logo from "../../../images/logoinsta.png";
@@ -23,10 +23,9 @@ export default function LoginPage() {
     }
   }
 
-  const {userLoggedIn} = useAuth();
+  const {userLoggedIn, loading, currentUser, success} = useAuth();
 
   const navigate = useNavigate();
-
 
   return (
     <div>

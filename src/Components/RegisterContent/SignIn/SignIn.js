@@ -4,6 +4,7 @@ import { auth, storage } from "../../firebase";
 import axios from "axios";
 import { useGetAuthUser } from "../../../hooks/useGetAuthUser";
 import { useSignIn } from "../../../hooks/useSignIn";
+import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
   
@@ -12,10 +13,12 @@ export default function SignIn() {
 
   //const {getAuthUser} = useGetAuthUser();
   const {signIn} = useSignIn();
+  const navigate = useNavigate();
 
   const logIn = async (e) => {
     e.preventDefault();
     await signIn(email, password);
+    navigate("/home");
   };
 
   return (
