@@ -1,5 +1,5 @@
 .dot-spinner {
-    --uib-size: 2.8rem;
+    --uib-size: 1.8rem;
     --uib-speed: .9s;
     --uib-color: #183153;
     position: relative;
@@ -8,7 +8,7 @@
     justify-content: flex-start;
     height: var(--uib-size);
     width: var(--uib-size);
-    margin: 350px auto ;
+    margin-right: 10px;
   }
   
   .dot-spinner__dot {

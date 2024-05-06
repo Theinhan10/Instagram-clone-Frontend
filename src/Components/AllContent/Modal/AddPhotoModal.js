@@ -16,6 +16,7 @@ import { Avatar } from "@mui/material";
 import { usePostFilesStorage } from "../../../hooks/usePostFilesStorage";
 import { useAddPost } from "../../../hooks/useAddPost";
 import { useAuth } from "../../../Context/AuthContext";
+import Loader from "../../../Components/Loader/Loader";
 
 export default function AddPhotoModal({ open, setOpen }) {
   //const [open, setOpen] = useState(false);
@@ -28,28 +29,24 @@ export default function AddPhotoModal({ open, setOpen }) {
   const [userName, setUserName] = useState();
   const [userUniqueId, setUserUniqueId] = useState();
 
-
   const { error, isLoading, success, uploadFileToStorage } =
     usePostFilesStorage();
   const { addPost } = useAddPost();
 
   const { currentUser, userLoggedIn } = useAuth();
 
-
-  
-  
   //const userUniqueId = currentUser.userUniqueId;
- // const userName = currentUser.userName;
+  // const userName = currentUser.userName;
 
-  useEffect(()=>{
-    if(currentUser){
+  useEffect(() => {
+    if (currentUser) {
       setUserName(currentUser.userName);
       setUserUniqueId(currentUser.userUniqueId);
     }
-  },[currentUser])
- 
-  console.log(images);
-  console.log(userName, userUniqueId);
+  }, [currentUser]);
+
+ // console.log(images);
+  //console.log(userName, userUniqueId);
   //console.log(downloadURLs);
 
   const handleSharePost = async () => {
@@ -64,7 +61,8 @@ export default function AddPhotoModal({ open, setOpen }) {
 
       // Now that download URLs are available, call addPost with all required parameters
       await addPost(urls, userUniqueId, userName, caption);
-      //window.location.reload();
+      window.location.reload();
+      
     } catch (error) {
       console.error("Error sharing post:", error);
       // Handle errors here
@@ -110,7 +108,6 @@ export default function AddPhotoModal({ open, setOpen }) {
     }
     setFinalAddPost(true);
     // Upload files to storage and get download URLs
-    
   };
 
   const handleBack = () => {
@@ -144,10 +141,16 @@ export default function AddPhotoModal({ open, setOpen }) {
                 <ArrowBackIcon style={{ fontSize: 28 }} onClick={handleBack} />
               </h1>
               <h1 className="CPname">Create new post</h1>
-              <h1 className="share" onClick={handleSharePost}>
-                Share
-              </h1>
-              {isLoading && <p>Loading...</p>}
+
+              <div>{!isLoading ? (
+                <h1 className="share" onClick={handleSharePost}>
+                  Share
+                </h1>
+              ) : (
+                <h1> <Loader/> </h1>
+                
+              )} </div>
+
             </div>
 
             <div className="imagesAndCaption">
