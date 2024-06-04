@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { AuthProvider } from "./Context/AuthContext";
+import { PostContextProvider } from "./Context/PostContext";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "./Components/RegisterContent/LoginPage/LoginPage";
 import Home from "./Components/AllContent/HomePage/Home";
@@ -30,7 +31,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <PostContextProvider>
+        <RouterProvider router={router} />
+      </PostContextProvider>
     </AuthProvider>
   </React.StrictMode>
 );

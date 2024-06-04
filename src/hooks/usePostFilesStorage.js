@@ -2,9 +2,11 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import { storage } from "../Components/firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL, getMetadata  } from "firebase/storage";
 import { v4 } from "uuid";
 
+
+//uploading files to the firebase storage
 export const usePostFilesStorage = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -40,4 +42,29 @@ export const usePostFilesStorage = () => {
   };
 
   return { error, isLoading, success, uploadFileToStorage };
+};
+
+//getting the file into from firebase storage
+export const useGetMetadata = () => {
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [metadata, setMetadata] = useState(null);
+
+  const getFileMetadata = async (path) => {
+    setIsLoading(true);
+    try {
+      const fileRef = ref(storage, path);
+      const metadata = await getMetadata(fileRef);
+      setMetadata(metadata);
+      setIsLoading(false);
+      return metadata;
+    } catch (error) {
+      console.error("Error fetching file metadata:", error);
+      setError(error);
+      setIsLoading(false);
+      return null;
+    }
+  };
+
+  return { error, isLoading, metadata, getFileMetadata };
 };

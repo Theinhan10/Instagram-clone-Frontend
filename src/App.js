@@ -4,6 +4,8 @@ import Home from "./Components/AllContent/HomePage/Home";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { useAuth } from "./Context/AuthContext";
 import Loader from "./Components/Loader/Loader";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 //this app.js file contains the main component of the application.
 function App() {

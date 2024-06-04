@@ -17,6 +17,7 @@ import { usePostFilesStorage } from "../../../hooks/usePostFilesStorage";
 import { useAddPost } from "../../../hooks/useAddPost";
 import { useAuth } from "../../../Context/AuthContext";
 import Loader from "../../../Components/Loader/Loader";
+import { useGetPost } from "../../../hooks/useGetPost";
 
 export default function AddPhotoModal({ open, setOpen }) {
   //const [open, setOpen] = useState(false);
@@ -28,26 +29,39 @@ export default function AddPhotoModal({ open, setOpen }) {
   const [caption, setCaption] = useState();
   const [userName, setUserName] = useState();
   const [userUniqueId, setUserUniqueId] = useState();
+  const [userImage, setUserImage] = useState(null);
 
-  const { error, isLoading, success, uploadFileToStorage } =
-    usePostFilesStorage();
-  const { addPost } = useAddPost();
+  const { uploadFileToStorage, isLoading } = usePostFilesStorage();
+  const { addPost, successAddingPost } = useAddPost();
 
   const { currentUser, userLoggedIn } = useAuth();
 
-  //const userUniqueId = currentUser.userUniqueId;
-  // const userName = currentUser.userName;
+  const { getAllPost } = useGetPost();
+
+  useEffect(() => {
+    getAllPost();
+    console.log("this effect run!");
+  }, [successAddingPost]);
 
   useEffect(() => {
     if (currentUser) {
       setUserName(currentUser.userName);
       setUserUniqueId(currentUser.userUniqueId);
+      setUserImage(currentUser.profileImage);
     }
+    console.log("Authenicated User", currentUser);
   }, [currentUser]);
 
- // console.log(images);
+  //console.log("image", images);
   //console.log(userName, userUniqueId);
   //console.log(downloadURLs);
+
+  //extracting the file name from the selected file for post
+  const extractFileNames = (files) => {
+    return files.map((file) => {
+      return file.name;
+    });
+  };
 
   const handleSharePost = async () => {
     if (images.length === 0) {
@@ -57,15 +71,21 @@ export default function AddPhotoModal({ open, setOpen }) {
 
     try {
       // Upload files to storage and get download URLs
-      const urls = await uploadFileToStorage(images);
+      const urls = await uploadFileToStorage(images); //most likely wont use firebase storage
+
+      //const urls = await extractFileNames(images);
+      console.log(urls);
 
       // Now that download URLs are available, call addPost with all required parameters
       await addPost(urls, userUniqueId, userName, caption);
-      window.location.reload();
-      
+      setFinalAddPost(false);
+      setCaption("");
+      setImages([]);
+      handleClose();
+      //window.location.reload();
     } catch (error) {
       console.error("Error sharing post:", error);
-      // Handle errors here
+      //Handle errors here
     }
   };
 
@@ -142,15 +162,18 @@ export default function AddPhotoModal({ open, setOpen }) {
               </h1>
               <h1 className="CPname">Create new post</h1>
 
-              <div>{!isLoading ? (
-                <h1 className="share" onClick={handleSharePost}>
-                  Share
-                </h1>
-              ) : (
-                <h1> <Loader/> </h1>
-                
-              )} </div>
-
+              <div>
+                {!isLoading ? (
+                  <h1 className="share" onClick={handleSharePost}>
+                    Share
+                  </h1>
+                ) : (
+                  <h1>
+                    {" "}
+                    <Loader />{" "}
+                  </h1>
+                )}{" "}
+              </div>
             </div>
 
             <div className="imagesAndCaption">
@@ -180,13 +203,14 @@ export default function AddPhotoModal({ open, setOpen }) {
                       ) {
                         // If the file is a video with MOV or MP4 extension
                         return (
-                          <video key={index} controls autoPlay>
+                          <video key={index} controls>
                             <source
                               src={URL.createObjectURL(file)}
                               type="video/mp4"
                             />
                             Your browser does not support the video tag.
                           </video>
+                          
                         );
                       } else {
                         return null; // Skip unknown file types
@@ -227,11 +251,11 @@ export default function AddPhotoModal({ open, setOpen }) {
               <div className="caption">
                 <div className="avatar_container">
                   <Avatar
-                    src={addPic}
+                    src={userImage}
                     style={{ width: "32px", height: "32px" }}
                   />
                   <div className="avatarName_container">
-                    <div className="info-username">UserName</div>
+                    <div className="info-username">{userName}</div>
                   </div>
                 </div>
                 <textarea

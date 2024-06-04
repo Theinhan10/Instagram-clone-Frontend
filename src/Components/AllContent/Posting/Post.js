@@ -1,5 +1,5 @@
 import { Avatar } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Post.css";
 import { RxDotsHorizontal } from "react-icons/rx";
 import pic from "../../../images/DSC09653.jpeg";
@@ -10,11 +10,35 @@ import pic2 from "../../../images/DSC09692.jpg";
 import pic3 from "../../../images/DSC09422.jpg";
 import vid from "../../../images/IMG_8256.MOV";
 
-import Carousel from "./Carousel";
+import PostCarousel from "./PostCarousel";
+import { useGetMetadata } from "../../../hooks/usePostFilesStorage";
+import { useAddPost } from "../../../hooks/useAddPost";
+import CustomCarousel from "./CustomCarousel";
 
-export default function Post(props) {
-  const [images, setImages] = useState([pic, vid, pic2, pic3]);
+export default function Post({ caption, id, userName, likes, images }) {
+  //const [images, setImages] = useState([pic, vid, pic2, pic3]);
   const [text, setText] = useState("");
+
+  const { getFileMetadata } = useGetMetadata();
+  const { successAddingPost } = useAddPost();
+
+  const [metadataUrls, setMetadataUrls] = useState([]);
+
+  useEffect(() => {
+    const fetchMetadata = async () => {
+      const urlsWithMetadata = await Promise.all(
+        images.map(async (url) => {
+          const metadata = await getFileMetadata(url);
+          return { url, metadata };
+        })
+      );
+      setMetadataUrls(urlsWithMetadata);
+    };
+
+    fetchMetadata();
+  }, [images]);
+
+  // console.log(metadataUrls);
 
   const handleChange = (e) => {
     setText(e.target.value);
@@ -41,51 +65,17 @@ export default function Post(props) {
       {/*Header */}
       <div className="post-header">
         <Avatar className="post-image" src="" />
-        <div className="post-username">{props.userName}</div>
+        <div className="post-username">{userName}</div>
         <div className="post-dot-option">
           {" "}
           <RxDotsHorizontal style={{ fontSize: "24px" }} />{" "}
         </div>
       </div>
 
-      {/*Image---- add the sliding here
-      
-        <div className="max-w-lg"> 
-          <Carousel>
-            {props.postImage.map((s) => (
-              <img src={s}/>
-            ))}
-
-          </Carousel>
-        
-        
-        </div>  
-              
-        
-        <div>
-        <img src={props.postImage} width="470px" />
-      </div>
-
-      
-      */}
-
       <div className="max-w-lg">
-        <Carousel>
-          {images.map((file, index) => {
-            if (file.endsWith(".jpeg") || file.endsWith(".jpg")) {
-              return <img key={index} src={file} alt="image" />;
-            } else if (file.endsWith(".MOV") || file.endsWith(".mp4")) {
-              return (
-                <video key={index} controls>
-                  <source src={file} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              );
-            } else {
-              return null; // Skip unknown file types
-            }
-          })}
-        </Carousel>
+        <PostCarousel images={metadataUrls} />
+
+        {/**<CustomCarousel images={metadataUrls} />*/}
       </div>
 
       {/*Analytics */}
@@ -97,12 +87,19 @@ export default function Post(props) {
         </div>
 
         <div style={{ fontWeight: "bold", fontSize: "12px" }}>
-          {props.likes} likes
+          {likes} likes
         </div>
 
-        <div style={{ fontSize: "12px" }}>
-          <span style={{ fontWeight: "bold" }}>{props.userName}</span>:{" "}
-          {props.postDescription}
+        <div
+          style={{
+            fontSize: "12px",
+            display: "flex",
+            gap: "4px",
+            height: "20px",
+          }}
+        >
+          <span style={{ fontWeight: "bold" }}>{userName}:</span>
+          <p>{caption}</p>
         </div>
       </div>
 

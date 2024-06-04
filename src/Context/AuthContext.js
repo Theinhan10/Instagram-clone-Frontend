@@ -48,20 +48,14 @@ export function AuthProvider({ children }) {
   // Authentication state change listener callback
   async function initializeUser(user) {
     if (user) {
-      // User is authenticated
-      console.log("User authenticated");
+
 
       const userUniqueId = user.uid;
       //console.log(userUniqueId);
 
-      
-      // Call getAuthUser to fetch user data from the server
-      //await getAuthUser(user.uid);
-
       // Fetch user data from local storage after updating
       const currentUserLocalStorage = JSON.parse(localStorage.getItem("users"));
 
-      console.log(currentUserLocalStorage);
 
       if (currentUserLocalStorage) {
         setCurrentUser(currentUserLocalStorage);

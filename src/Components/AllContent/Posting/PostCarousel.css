@@ -1,0 +1,32 @@
+.carousel {
+    background-color: antiquewhite;
+    margin: auto;
+    width: 470px;
+  }
+
+  .video-player{
+    border-radius: 10px;
+  }
+
+.carousel-control-prev {
+    height: 10px;
+    margin-top: 300px;
+  }
+  .carousel-control-next {
+    height: 10px;
+    margin-top: 300px;
+  }
+  
+  .carousel .carousel-control-prev-icon {
+    visibility: hidden;
+  }
+  .carousel:hover .carousel-control-prev-icon {
+    visibility: visible;
+  }
+  
+  .carousel .carousel-control-next-icon {
+    visibility: hidden;
+  }
+  .carousel:hover .carousel-control-next-icon {
+    visibility: visible;
+  }

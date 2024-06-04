@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export const useAddPost = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [successAddingPost, setSuccessAddingPost] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,15 +26,15 @@ export const useAddPost = () => {
         console.log("Successfully made a Post (pic)", response.data);
         //console.log(response.data);
         setIsLoading(false);
-        setSuccess(true);
+        setSuccessAddingPost(true);
       })
       .catch(function (error) {
         console.log("Error with Post pic in DB: " + error);
         setIsLoading(false);
-        setSuccess(false);
+        setSuccessAddingPost(false);
         setError(error);
       });
   };
 
-  return { addPost, isLoading, error, success };
+  return { addPost, isLoading, error, successAddingPost };
 };
